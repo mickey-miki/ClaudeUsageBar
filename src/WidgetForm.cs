@@ -126,7 +126,7 @@ public sealed class WidgetForm : Form
         DrawRow(g, normal, small, S(56), "今週 (7日)", state.Last?.SevenDay);
 
         var time = state.Last is { } l ? TimeZoneInfo.ConvertTime(l.FetchedAt, Jst).ToString("M/d HH:mm") : null;
-        var footer = hasError ? $"更新失敗（{error}）" + (time is null ? "" : $" 最終 {time}")
+        var footer = hasError ? $"更新失敗({error})" + (time is null ? "" : $" {time}")
             : time is null ? "取得中…" : $"更新 {time}";
         Draw(g, footer, small, hasError ? Color.FromArgb(255, 138, 128) : Muted, S(103), TextFormatFlags.Left);
     }

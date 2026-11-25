@@ -46,7 +46,7 @@ public sealed class OAuthUsageSource : IUsageSource
                 throw new UsageException("回数制限中", wait);
             }
             if (response.StatusCode == HttpStatusCode.Unauthorized)
-                throw new UsageException("要 Claude Code 起動");
+                throw new UsageException("トークン期限切れ");
             if (!response.IsSuccessStatusCode)
                 throw new UsageException($"HTTP {(int)response.StatusCode}");
             return Parse(await response.Content.ReadAsStringAsync());
@@ -70,7 +70,7 @@ public sealed class OAuthUsageSource : IUsageSource
             using var doc = JsonDocument.Parse(stream);
             var oauth = doc.RootElement.GetProperty("claudeAiOauth");
             var expires = DateTimeOffset.FromUnixTimeMilliseconds(oauth.GetProperty("expiresAt").GetInt64());
-            if (expires <= DateTimeOffset.UtcNow) throw new UsageException("要 Claude Code 起動");
+            if (expires <= DateTimeOffset.UtcNow) throw new UsageException("トークン期限切れ");
             var token = oauth.GetProperty("accessToken").GetString();
             if (string.IsNullOrWhiteSpace(token) || token.Any(c => c < '!' || c > '~'))
                 throw new UsageException("認証情報なし");
