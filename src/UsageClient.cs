@@ -2,7 +2,7 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Text.Json;
 
-namespace ClaudeUsage;
+namespace ClaudeUsageBar;
 
 public sealed record UsageWindow(double Percent, DateTimeOffset? ResetsAt);
 public sealed record UsageSnapshot(UsageWindow FiveHour, UsageWindow SevenDay, DateTimeOffset FetchedAt);

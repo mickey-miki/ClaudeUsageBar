@@ -1,7 +1,7 @@
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 
-namespace ClaudeUsage;
+namespace ClaudeUsageBar;
 
 /// <summary>配色。50％・80％以上の黄・赤は警告なので、どの配色でも変えない。</summary>
 public sealed record Theme(string Name, Color Back, Color Accent)
@@ -37,7 +37,7 @@ public sealed class WidgetForm : Form
     public WidgetForm(AppState state)
     {
         this.state = state;
-        Text = "Claude 使用量";
+        Text = "ClaudeUsageBar";
         FormBorderStyle = FormBorderStyle.None;
         AutoScaleMode = AutoScaleMode.None;
         StartPosition = FormStartPosition.Manual;

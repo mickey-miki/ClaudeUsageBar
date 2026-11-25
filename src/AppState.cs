@@ -1,12 +1,12 @@
 using System.Text.Json;
 
-namespace ClaudeUsage;
+namespace ClaudeUsageBar;
 
 /// <summary>位置・表示状態・最後の値。認証情報は保存しない。</summary>
 public sealed class AppState
 {
     static readonly string FilePath = Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ClaudeUsage", "state.json");
+        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ClaudeUsageBar", "state.json");
 
     public int? X { get; set; }
     public int? Y { get; set; }

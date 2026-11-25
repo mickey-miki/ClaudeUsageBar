@@ -1,4 +1,4 @@
-# Claude 使用量ウィジェット
+# ClaudeUsageBar
 
 Claude のプラン使用量（5時間枠・7日枠）を常時表示する、Windows 用の常駐アプリです。時刻は日本時間です。
 
@@ -16,11 +16,11 @@ Claude のプラン使用量（5時間枠・7日枠）を常時表示する、Wi
 dotnet publish src -c Release -o publish
 ```
 
-`publish\ClaudeUsage.exe` ができます。起動中は上書きできないので、先に終了してください。
+`publish\ClaudeUsageBar.exe` ができます。起動中は上書きできないので、先に終了してください。
 
 ## 起動と操作
 
-`publish\ClaudeUsage.exe` を実行します。インストールは不要です。
+`publish\ClaudeUsageBar.exe` を実行します。インストールは不要です。
 
 - 横一列の表示で、初期位置はタスクバーの通知領域の左隣です
 - ドラッグで移動できます。位置は保存されます。タスクバー上で放すと上下中央にそろいます
@@ -49,8 +49,8 @@ dotnet publish src -c Release -o publish
 - `~/.claude/.credentials.json` を読み取り専用で開き、`https://api.anthropic.com/api/oauth/usage` にだけトークンを送ります。モデルは呼びません
 - トークンの更新・保存・ログ出力はしません。リダイレクトも追いません
 - 非公式のエンドポイントなので、予告なく動かなくなることがあります
-- 保存するのは位置・表示状態・配色・最後の使用量だけです（`%APPDATA%\ClaudeUsage\state.json`）
-- アンインストール：「Windows起動時に開始」をオフにして終了し、exe と `%APPDATA%\ClaudeUsage` を削除します
+- 保存するのは位置・表示状態・配色・最後の使用量だけです（`%APPDATA%\ClaudeUsageBar\state.json`）
+- アンインストール：「Windows起動時に開始」をオフにして終了し、exe と `%APPDATA%\ClaudeUsageBar` を削除します
 
 ## 別の環境で使う
 

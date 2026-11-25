@@ -1,14 +1,14 @@
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
 
-namespace ClaudeUsage;
+namespace ClaudeUsageBar;
 
 static class Program
 {
     [STAThread]
     static void Main()
     {
-        using var mutex = new Mutex(true, @"Local\ClaudeUsageWidget", out var first);
+        using var mutex = new Mutex(true, @"Local\ClaudeUsageBar", out var first);
         if (!first) return;
         ApplicationConfiguration.Initialize();
         Application.Run(new TrayContext(new OAuthUsageSource()));
@@ -18,7 +18,7 @@ static class Program
 sealed class TrayContext : ApplicationContext
 {
     const string RunKey = @"Software\Microsoft\Windows\CurrentVersion\Run";
-    const string RunName = "ClaudeUsage";
+    const string RunName = "ClaudeUsageBar";
     static readonly TimeSpan Interval = TimeSpan.FromMinutes(5), ManualGap = TimeSpan.FromSeconds(30);
 
     readonly IUsageSource source;
@@ -138,7 +138,7 @@ sealed class TrayContext : ApplicationContext
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException or System.Security.SecurityException)
         {
-            MessageBox.Show("自動起動の設定を変更できませんでした。", "Claude 使用量");
+            MessageBox.Show("自動起動の設定を変更できませんでした。", "ClaudeUsageBar");
         }
     }
 
@@ -160,7 +160,7 @@ sealed class TrayContext : ApplicationContext
         using (var temp = Icon.FromHandle(handle)) tray.Icon = new Icon(temp, temp.Size);
         old?.Dispose();
         DestroyIcon(handle);
-        tray.Text = last is null ? "Claude 使用量"
+        tray.Text = last is null ? "ClaudeUsageBar"
             : $"5時間 {WidgetForm.Rounded(last.FiveHour.Percent)}% / 7日 {WidgetForm.Rounded(last.SevenDay.Percent)}%"
               + (failed ? "（更新失敗）" : "");
     }
