@@ -1,6 +1,31 @@
-bin/
-obj/
-publish/
+# ビルド生成物
+[Bb]in/
+[Oo]bj/
+/publish/
+*.binlog
+
+# IDE・個人設定
 .vs/
+.idea/
+.vscode/
 *.user
+*.suo
+
+# Claude Code の個人設定
+.claude/settings.local.json
+CLAUDE.local.md
+
+# 認証情報・実行時データ（コミット禁止）
 .credentials.json
+.env
+.env.*
+state.json
+state.json.tmp
+
+# ログ・一時ファイル
+*.log
+*.tmp
+
+# OS
+Thumbs.db
+Desktop.ini
