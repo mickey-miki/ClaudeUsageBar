@@ -10,6 +10,13 @@ Claude のプラン使用量（5時間枠・7日枠）を常時表示する、Wi
 - .NET 8 デスクトップランタイム（ビルドには .NET 8 SDK）
 - Claude Code にサブスクリプションでログイン済みであること
 
+## ダウンロード
+
+ビルド済みの exe は [Releases](https://github.com/mickey-miki/ClaudeUsageBar/releases) にあります。使う前に「免責・注意事項」を必ず読んでください。
+
+- 署名していないため、Windows の警告（SmartScreen）が出ることがあります。Releases に書かれた SHA-256 と一致するか確かめてから実行してください：`Get-FileHash ClaudeUsageBar.exe`
+- 実行には .NET 8 デスクトップランタイム（x64）が必要です
+
 ## ビルド
 
 ```powershell
@@ -20,7 +27,7 @@ dotnet publish src -c Release -o publish
 
 ## 起動と操作
 
-`publish\ClaudeUsageBar.exe` を実行します。インストールは不要です。
+`ClaudeUsageBar.exe`（自分でビルドした場合は `publish` の中）を実行します。インストールは不要です。
 
 - 横一列の表示で、初期位置はタスクバーの通知領域の左隣です
 - ドラッグで移動できます。位置は保存されます。タスクバー上で放すと上下中央にそろいます
