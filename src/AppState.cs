@@ -11,6 +11,7 @@ public sealed class AppState
     public int? X { get; set; }
     public int? Y { get; set; }
     public bool Visible { get; set; } = true;
+    public string? Theme { get; set; }
     public UsageSnapshot? Last { get; set; }
 
     public static AppState Load()

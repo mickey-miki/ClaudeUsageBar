@@ -28,7 +28,7 @@ sealed class TrayContext : ApplicationContext
     readonly System.Windows.Forms.Timer timer = new() { Interval = 100 };
     DateTimeOffset nextDue = DateTimeOffset.MinValue, lastTry = DateTimeOffset.MinValue,
         blockedUntil = DateTimeOffset.MinValue;
-    bool busy;
+    bool busy, failed;
 
     public TrayContext(IUsageSource source)
     {
@@ -39,11 +39,38 @@ sealed class TrayContext : ApplicationContext
         startup.Click += (_, _) => SetStartup(!IsStartup());
         var menu = new ContextMenuStrip();
         menu.Items.Add("表示/非表示", null, (_, _) => Toggle());
+        menu.Items.Add("タスクバーに配置", null, (_, _) =>
+        {
+            widget.DockToTaskbar();
+            widget.Show();
+            state.Visible = true;
+            state.Save();
+        });
+        var colors = new ToolStripMenuItem("色");
+        foreach (var theme in Theme.All)
+        {
+            var item = new ToolStripMenuItem(theme.Name);
+            item.Click += (_, _) =>
+            {
+                state.Theme = theme.Name;
+                state.Save();
+                widget.ApplyTheme();
+                UpdateTray(failed);
+            };
+            colors.DropDownItems.Add(item);
+        }
+        menu.Items.Add(colors);
         menu.Items.Add("今すぐ更新", null, async (_, _) => await RefreshAsync());
         menu.Items.Add(startup);
         menu.Items.Add(new ToolStripSeparator());
         menu.Items.Add("終了", null, (_, _) => ExitThread());
-        menu.Opening += (_, _) => startup.Checked = IsStartup();
+        menu.Opening += (_, _) =>
+        {
+            startup.Checked = IsStartup();
+            foreach (ToolStripMenuItem item in colors.DropDownItems)
+                item.Checked = item.Text == Theme.Find(state.Theme).Name;
+        };
+        widget.ContextMenuStrip = menu;
 
         tray = new NotifyIcon { ContextMenuStrip = menu };
         tray.MouseDoubleClick += (_, e) => { if (e.Button == MouseButtons.Left) Toggle(); };
@@ -117,13 +144,14 @@ sealed class TrayContext : ApplicationContext
 
     void UpdateTray(bool failed)
     {
+        this.failed = failed;
         var last = state.Last;
         var max = last is null ? 0 : Math.Max(last.FiveHour.Percent, last.SevenDay.Percent);
         using var bmp = new Bitmap(16, 16);
         using (var g = Graphics.FromImage(bmp))
         {
             g.Clear(Color.FromArgb(32, 33, 36));
-            using var b = new SolidBrush(failed || last is null ? Color.Gray : WidgetForm.LevelColor(max));
+            using var b = new SolidBrush(failed || last is null ? Color.Gray : WidgetForm.LevelColor(max, Theme.Find(state.Theme).Accent));
             var h = Math.Max(2, (int)Math.Round(14 * Math.Clamp(max, 0, 100) / 100));
             g.FillRectangle(b, 3, 15 - h, 10, h);
         }
